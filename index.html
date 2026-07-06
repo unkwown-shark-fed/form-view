@@ -1,452 +1,484 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BGMI Discord Moderator Applications</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-<style>
-  body {
-    background: #ffffff;
-    color: #000000;
-    font-family: Arial, Helvetica, sans-serif;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    line-height: 1.5;
-  }
-  h1 {
-    font-size: 22px;
-    margin-bottom: 4px;
-  }
-  .count {
-    color: #555555;
-    margin-bottom: 20px;
-    font-size: 14px;
-  }
-  input#search {
-    width: 100%;
-    padding: 8px;
-    font-size: 14px;
-    margin-bottom: 20px;
-    box-sizing: border-box;
-  }
-  .applicant {
-    border: 1px solid #cccccc;
-    padding: 10px 16px;
-    margin-bottom: 8px;
-  }
-  .applicant summary {
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    padding: 4px 0;
-  }
-  .applicant summary .meta-inline {
-    font-weight: normal;
-    color: #555555;
-    font-size: 13px;
-  }
-  .meta {
-    color: #555555;
-    font-size: 13px;
-    margin: 8px 0;
-  }
-  .qa {
-    margin-top: 8px;
-  }
-  .q {
-    font-weight: bold;
-    font-size: 13px;
-    margin-top: 8px;
-  }
-  .a {
-    font-size: 13px;
-    margin: 2px 0 0 0;
-    white-space: pre-wrap;
-  }
-  .controls {
-    margin-bottom: 12px;
-  }
-  .controls button {
-    font-size: 13px;
-    padding: 6px 12px;
-    margin-right: 8px;
-    cursor: pointer;
-  }
-  .filters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    margin-bottom: 16px;
-    font-size: 13px;
-  }
-  .filters label {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-  }
-  .filters select {
-    font-size: 13px;
-    padding: 4px;
-  }
-  .upload-box {
-    border: 1px dashed #999999;
-    padding: 12px;
-    margin-bottom: 16px;
-    font-size: 13px;
-  }
-  .upload-box input[type="file"] {
-    font-size: 13px;
-    margin-left: 8px;
-  }
-  #uploadStatus {
-    margin-left: 10px;
-    color: #555555;
-  }
-  .stats-bar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    font-size: 13px;
-    color: #333333;
-    border: 1px solid #dddddd;
-    background: #fafafa;
-    padding: 10px 14px;
-    margin-bottom: 16px;
-  }
-  .stats-bar b {
-    color: #000000;
-  }
-  .jump-index {
-    font-size: 12px;
-    color: #333333;
-    margin-bottom: 14px;
-    line-height: 1.9;
-  }
-  .jump-index a {
-    color: #0000EE;
-    text-decoration: none;
-    margin-right: 10px;
-  }
-  .jump-index a:hover {
-    text-decoration: underline;
-  }
-  mark {
-    background: #ffef82;
-    padding: 0 1px;
-  }
-  .badge {
-    display: inline-block;
-    font-size: 11px;
-    font-weight: bold;
-    padding: 1px 6px;
-    margin-left: 8px;
-    border: 1px solid;
-    border-radius: 2px;
-  }
-  .badge-dup {
-    color: #a94442;
-    border-color: #a94442;
-    background: #f9e5e4;
-  }
-  .badge-invalid {
-    color: #8a6d3b;
-    border-color: #8a6d3b;
-    background: #fcf3e0;
-  }
-  .empty-state {
-    border: 1px dashed #cccccc;
-    padding: 30px;
-    text-align: center;
-    color: #666666;
-    font-size: 14px;
-  }
-  hr {
-    border: none;
-    border-top: 1px solid #dddddd;
-    margin: 20px 0;
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BGMI Discord Moderator Applications</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <style>
+    body {
+      background: #ffffff;
+      color: #000000;
+      font-family: Arial, Helvetica, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      line-height: 1.5;
+    }
+
+    h1 {
+      font-size: 22px;
+      margin-bottom: 4px;
+    }
+
+    .count {
+      color: #555555;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    input#search {
+      width: 100%;
+      padding: 8px;
+      font-size: 14px;
+      margin-bottom: 20px;
+      box-sizing: border-box;
+    }
+
+    .applicant {
+      border: 1px solid #cccccc;
+      padding: 10px 16px;
+      margin-bottom: 8px;
+    }
+
+    .applicant summary {
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      padding: 4px 0;
+    }
+
+    .applicant summary .meta-inline {
+      font-weight: normal;
+      color: #555555;
+      font-size: 13px;
+    }
+
+    .meta {
+      color: #555555;
+      font-size: 13px;
+      margin: 8px 0;
+    }
+
+    .qa {
+      margin-top: 8px;
+    }
+
+    .q {
+      font-weight: bold;
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    .a {
+      font-size: 13px;
+      margin: 2px 0 0 0;
+      white-space: pre-wrap;
+    }
+
+    .controls {
+      margin-bottom: 12px;
+    }
+
+    .controls button {
+      font-size: 13px;
+      padding: 6px 12px;
+      margin-right: 8px;
+      cursor: pointer;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 16px;
+      font-size: 13px;
+    }
+
+    .filters label {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .filters select {
+      font-size: 13px;
+      padding: 4px;
+    }
+
+    .upload-box {
+      border: 1px dashed #999999;
+      padding: 12px;
+      margin-bottom: 16px;
+      font-size: 13px;
+    }
+
+    .upload-box input[type="file"] {
+      font-size: 13px;
+      margin-left: 8px;
+    }
+
+    #uploadStatus {
+      margin-left: 10px;
+      color: #555555;
+    }
+
+    .stats-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      font-size: 13px;
+      color: #333333;
+      border: 1px solid #dddddd;
+      background: #fafafa;
+      padding: 10px 14px;
+      margin-bottom: 16px;
+    }
+
+    .stats-bar b {
+      color: #000000;
+    }
+
+    .jump-index {
+      font-size: 12px;
+      color: #333333;
+      margin-bottom: 14px;
+      line-height: 1.9;
+    }
+
+    .jump-index a {
+      color: #0000EE;
+      text-decoration: none;
+      margin-right: 10px;
+    }
+
+    .jump-index a:hover {
+      text-decoration: underline;
+    }
+
+    mark {
+      background: #ffef82;
+      padding: 0 1px;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: bold;
+      padding: 1px 6px;
+      margin-left: 8px;
+      border: 1px solid;
+      border-radius: 2px;
+    }
+
+    .badge-dup {
+      color: #a94442;
+      border-color: #a94442;
+      background: #f9e5e4;
+    }
+
+    .badge-invalid {
+      color: #8a6d3b;
+      border-color: #8a6d3b;
+      background: #fcf3e0;
+    }
+
+    .empty-state {
+      border: 1px dashed #cccccc;
+      padding: 30px;
+      text-align: center;
+      color: #666666;
+      font-size: 14px;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid #dddddd;
+      margin: 20px 0;
+    }
+  </style>
 </head>
+
 <body>
 
-<h1>BGMI Discord Moderator Applications</h1>
-<div class="count" id="count"></div>
-<div class="stats-bar" id="statsBar"></div>
+  <h1>BGMI Discord Moderator Applications</h1>
+  <div class="count" id="count"></div>
+  <div class="stats-bar" id="statsBar"></div>
 
-<div class="upload-box" id="uploadBox">
-  <label for="csvFile"><strong>Load a CSV file:</strong></label>
-  <input type="file" id="csvFile" accept=".csv">
-  <span id="uploadStatus"></span>
-</div>
+  <div class="upload-box" id="uploadBox">
+    <label for="csvFile"><strong>Load a CSV file:</strong></label>
+    <input type="file" id="csvFile" accept=".csv">
+    <span id="uploadStatus"></span>
+  </div>
 
-<input type="text" id="search" placeholder="Search by username or answer text...">
+  <input type="text" id="search" placeholder="Search by username or answer text...">
 
-<div class="controls">
-  <button id="expandAll">Expand all</button>
-  <button id="collapseAll">Collapse all</button>
-</div>
+  <div class="controls">
+    <button id="expandAll">Expand all</button>
+    <button id="collapseAll">Collapse all</button>
+  </div>
 
-<div class="filters">
-  <label>Sort by:
-    <select id="sortBy">
-      <option value="default">Submission order</option>
-      <option value="newest">Newest first</option>
-      <option value="oldest">Oldest first</option>
-      <option value="username">Username (A-Z)</option>
-    </select>
-  </label>
+  <div class="filters">
+    <label>Sort by:
+      <select id="sortBy">
+        <option value="default">Submission order</option>
+        <option value="newest">Newest first</option>
+        <option value="oldest">Oldest first</option>
+        <option value="username">Username (A-Z)</option>
+      </select>
+    </label>
 
-  <label>Moderation experience:
-    <select id="filterModExp">
-      <option value="all">All</option>
-      <option value="yes">Yes only</option>
-      <option value="no">No only</option>
-    </select>
-  </label>
+    <label>Moderation experience:
+      <select id="filterModExp">
+        <option value="all">All</option>
+        <option value="yes">Yes only</option>
+        <option value="no">No only</option>
+      </select>
+    </label>
 
-  <label>Discord bot experience:
-    <select id="filterBotExp">
-      <option value="all">All</option>
-      <option value="yes">Yes only</option>
-      <option value="no">No only</option>
-    </select>
-  </label>
+    <label>Discord bot experience:
+      <select id="filterBotExp">
+        <option value="all">All</option>
+        <option value="yes">Yes only</option>
+        <option value="no">No only</option>
+      </select>
+    </label>
 
-  <label>BGMI UID check:
-    <select id="filterUid">
-      <option value="all">All</option>
-      <option value="duplicate">Duplicates only</option>
-      <option value="invalid">Invalid length (not 9-13 digits)</option>
-      <option value="valid">Valid length only (9-13 digits)</option>
-    </select>
-  </label>
-</div>
+    <label>BGMI UID check:
+      <select id="filterUid">
+        <option value="all">All</option>
+        <option value="duplicate">Duplicates only</option>
+        <option value="invalid">Invalid length (not 9-13 digits)</option>
+        <option value="valid">Valid length only (9-13 digits)</option>
+      </select>
+    </label>
+  </div>
 
-<div class="jump-index" id="jumpIndex"></div>
+  <div class="jump-index" id="jumpIndex"></div>
 
-<div id="list"></div>
+  <div id="list"></div>
 
-<script>
-let DATA = [];
+  <script>
+    let DATA = [];
 
-const TOP_FIELDS = ["Username", "User ID", "Submitted At"];
-const UID_FIELD = "Please enter your BGMI numeric ID.";
+    const TOP_FIELDS = ["Username", "User ID", "Submitted At"];
+    const UID_FIELD = "Please enter your BGMI numeric ID.";
 
-function getUidDigits(row) {
-  return String(row[UID_FIELD] || '').replace(/\D/g, '');
-}
+    function getUidDigits(row) {
+      return String(row[UID_FIELD] || '').replace(/\D/g, '');
+    }
 
-function isUidLengthValid(row) {
-  const len = getUidDigits(row).length;
-  return len >= 9 && len <= 13;
-}
+    function isUidLengthValid(row) {
+      const len = getUidDigits(row).length;
+      return len >= 9 && len <= 13;
+    }
 
-function computeUidDuplicates(data) {
-  const counts = {};
-  data.forEach(row => {
-    const uid = getUidDigits(row);
-    if (!uid) return;
-    counts[uid] = (counts[uid] || 0) + 1;
-  });
-  return counts;
-}
+    function computeUidDuplicates(data) {
+      const counts = {};
+      data.forEach(row => {
+        const uid = getUidDigits(row);
+        if (!uid) return;
+        counts[uid] = (counts[uid] || 0) + 1;
+      });
+      return counts;
+    }
 
-function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
 
-function highlight(text, query) {
-  const escaped = escapeHtml(text);
-  if (!query) return escaped;
-  const idx = escaped.toLowerCase().indexOf(query.toLowerCase());
-  if (idx === -1) return escaped;
-  return escaped.slice(0, idx) + '<mark>' + escaped.slice(idx, idx + query.length) + '</mark>' + escaped.slice(idx + query.length);
-}
+    function highlight(text, query) {
+      const escaped = escapeHtml(text);
+      if (!query) return escaped;
+      const idx = escaped.toLowerCase().indexOf(query.toLowerCase());
+      if (idx === -1) return escaped;
+      return escaped.slice(0, idx) + '<mark>' + escaped.slice(idx, idx + query.length) + '</mark>' + escaped.slice(idx + query.length);
+    }
 
-function rowMatches(row, query) {
-  if (!query) return false;
-  return Object.values(row).some(v => String(v || '').toLowerCase().includes(query.toLowerCase()));
-}
+    function rowMatches(row, query) {
+      if (!query) return false;
+      return Object.values(row).some(v => String(v || '').toLowerCase().includes(query.toLowerCase()));
+    }
 
-function render(data, query) {
-  query = query || '';
-  document.getElementById('count').textContent = DATA.length === 0 ? '' : data.length + ' application' + (data.length === 1 ? '' : 's');
-  const list = document.getElementById('list');
-  list.innerHTML = '';
+    function render(data, query) {
+      query = query || '';
+      document.getElementById('count').textContent = DATA.length === 0 ? '' : data.length + ' application' + (data.length === 1 ? '' : 's');
+      const list = document.getElementById('list');
+      list.innerHTML = '';
 
-  if (DATA.length === 0) {
-    list.innerHTML = '<div class="empty-state">No CSV loaded yet. Use "Load a CSV file" above to get started.</div>';
-    renderJumpIndex([]);
-    return;
-  }
+      if (DATA.length === 0) {
+        list.innerHTML = '<div class="empty-state">No CSV loaded yet. Use "Load a CSV file" above to get started.</div>';
+        renderJumpIndex([]);
+        return;
+      }
 
-  const uidCounts = computeUidDuplicates(DATA); // duplicates checked against the FULL dataset, not just filtered view
+      const uidCounts = computeUidDuplicates(DATA); // duplicates checked against the FULL dataset, not just filtered view
 
-  data.forEach((row, i) => {
-    const details = document.createElement('details');
-    details.className = 'applicant';
-    details.id = 'app-' + i;
-    if (query && rowMatches(row, query)) details.open = true;
+      data.forEach((row, i) => {
+        const details = document.createElement('details');
+        details.className = 'applicant';
+        details.id = 'app-' + i;
+        if (query && rowMatches(row, query)) details.open = true;
 
-    const uidDigits = getUidDigits(row);
-    const isDup = uidDigits && uidCounts[uidDigits] > 1;
-    const isInvalid = !isUidLengthValid(row);
+        const uidDigits = getUidDigits(row);
+        const isDup = uidDigits && uidCounts[uidDigits] > 1;
+        const isInvalid = !isUidLengthValid(row);
 
-    let html = '<summary>#' + (i + 1) + ' — ' + highlight(row['Username'] || 'Unknown', query) +
-      ' <span class="meta-inline">(' + escapeHtml(row['Submitted At'] || '—') + ')</span>' +
-      (isDup ? '<span class="badge badge-dup">DUPLICATE UID</span>' : '') +
-      (isInvalid ? '<span class="badge badge-invalid">INVALID UID LENGTH</span>' : '') +
-      '</summary>';
+        let html = '<summary>#' + (i + 1) + ' — ' + highlight(row['Username'] || 'Unknown', query) +
+          ' <span class="meta-inline">(' + escapeHtml(row['Submitted At'] || '—') + ')</span>' +
+          (isDup ? '<span class="badge badge-dup">DUPLICATE UID</span>' : '') +
+          (isInvalid ? '<span class="badge badge-invalid">INVALID UID LENGTH</span>' : '') +
+          '</summary>';
 
-    html += '<div class="meta">User ID: ' + escapeHtml(row['User ID'] || '—') + '</div>';
-    html += '<div class="meta">BGMI UID: ' + escapeHtml(row[UID_FIELD] || '—') +
-      ' <span style="color:#888;">(' + uidDigits.length + ' digits' + (isDup ? ', appears ' + uidCounts[uidDigits] + ' times' : '') + ')</span></div>';
+        html += '<div class="meta">User ID: ' + escapeHtml(row['User ID'] || '—') + '</div>';
+        html += '<div class="meta">BGMI UID: ' + escapeHtml(row[UID_FIELD] || '—') +
+          ' <span style="color:#888;">(' + uidDigits.length + ' digits' + (isDup ? ', appears ' + uidCounts[uidDigits] + ' times' : '') + ')</span></div>';
 
-    html += '<div class="qa">';
-    Object.keys(row).forEach(field => {
-      if (TOP_FIELDS.includes(field) || field === UID_FIELD) return;
-      html += '<div class="q">' + escapeHtml(field) + '</div>';
-      html += '<div class="a">' + highlight(row[field] || '—', query) + '</div>';
+        html += '<div class="qa">';
+        Object.keys(row).forEach(field => {
+          if (TOP_FIELDS.includes(field) || field === UID_FIELD) return;
+          html += '<div class="q">' + escapeHtml(field) + '</div>';
+          html += '<div class="a">' + highlight(row[field] || '—', query) + '</div>';
+        });
+        html += '</div>';
+
+        details.innerHTML = html;
+        list.appendChild(details);
+      });
+
+      renderJumpIndex(data);
+    }
+
+    function renderJumpIndex(data) {
+      const el = document.getElementById('jumpIndex');
+      if (!data.length) { el.innerHTML = ''; return; }
+      el.innerHTML = data.map((row, i) =>
+        '<a href="#app-' + i + '">' + escapeHtml(row['Username'] || 'Unknown') + '</a>'
+      ).join('');
+    }
+
+    function renderStatsBar() {
+      const el = document.getElementById('statsBar');
+      if (DATA.length === 0) {
+        el.innerHTML = '<span>No data loaded yet.</span>';
+        return;
+      }
+      const total = DATA.length;
+      const modYes = DATA.filter(r => answerIsYes(r[MOD_EXP_FIELD])).length;
+      const botYes = DATA.filter(r => answerIsYes(r[BOT_EXP_FIELD])).length;
+      const uidCounts = computeUidDuplicates(DATA);
+      const dupCount = DATA.filter(r => { const u = getUidDigits(r); return u && uidCounts[u] > 1; }).length;
+      const invalidCount = DATA.filter(r => !isUidLengthValid(r)).length;
+      el.innerHTML =
+        '<span><b>' + total + '</b> total applicants</span>' +
+        '<span><b>' + modYes + '</b> with moderation experience</span>' +
+        '<span><b>' + botYes + '</b> with Discord bot experience</span>' +
+        '<span><b>' + dupCount + '</b> with duplicate BGMI UID</span>' +
+        '<span><b>' + invalidCount + '</b> with invalid UID length</span>';
+    }
+
+    const MOD_EXP_FIELD = "Do you have any prior moderation/management experience?";
+    const BOT_EXP_FIELD = "Do you have experience using Discord Bots?";
+
+    function answerIsYes(v) {
+      return String(v || '').trim().toLowerCase().startsWith('yes');
+    }
+
+    function parseSubmitted(v) {
+      const t = Date.parse(v);
+      return isNaN(t) ? 0 : t;
+    }
+
+    function applyFilters() {
+      const q = document.getElementById('search').value.trim().toLowerCase();
+      const sortBy = document.getElementById('sortBy').value;
+      const modExp = document.getElementById('filterModExp').value;
+      const botExp = document.getElementById('filterBotExp').value;
+      const uidFilter = document.getElementById('filterUid').value;
+
+      let rows = DATA.slice();
+      const uidCounts = computeUidDuplicates(DATA);
+
+      if (q) {
+        rows = rows.filter(row =>
+          Object.values(row).some(v => String(v || '').toLowerCase().includes(q))
+        );
+      }
+      if (modExp !== 'all') {
+        rows = rows.filter(row => answerIsYes(row[MOD_EXP_FIELD]) === (modExp === 'yes'));
+      }
+      if (botExp !== 'all') {
+        rows = rows.filter(row => answerIsYes(row[BOT_EXP_FIELD]) === (botExp === 'yes'));
+      }
+      if (uidFilter === 'duplicate') {
+        rows = rows.filter(row => { const u = getUidDigits(row); return u && uidCounts[u] > 1; });
+      } else if (uidFilter === 'invalid') {
+        rows = rows.filter(row => !isUidLengthValid(row));
+      } else if (uidFilter === 'valid') {
+        rows = rows.filter(row => isUidLengthValid(row));
+      }
+
+      if (sortBy === 'newest') {
+        rows.sort((a, b) => parseSubmitted(b['Submitted At']) - parseSubmitted(a['Submitted At']));
+      } else if (sortBy === 'oldest') {
+        rows.sort((a, b) => parseSubmitted(a['Submitted At']) - parseSubmitted(b['Submitted At']));
+      } else if (sortBy === 'username') {
+        rows.sort((a, b) => String(a['Username'] || '').toLowerCase().localeCompare(String(b['Username'] || '').toLowerCase()));
+      }
+
+      render(rows, q);
+    }
+
+    document.getElementById('search').addEventListener('input', applyFilters);
+    document.getElementById('sortBy').addEventListener('change', applyFilters);
+    document.getElementById('filterModExp').addEventListener('change', applyFilters);
+    document.getElementById('filterBotExp').addEventListener('change', applyFilters);
+    document.getElementById('filterUid').addEventListener('change', applyFilters);
+
+    document.getElementById('csvFile').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const status = document.getElementById('uploadStatus');
+      status.textContent = 'Reading ' + file.name + '...';
+
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const result = Papa.parse(ev.target.result.trim(), { header: true, skipEmptyLines: true });
+        if (result.errors.length) {
+          console.error(result.errors);
+        }
+        const rows = result.data.filter(r => Object.values(r).some(v => String(v || '').trim() !== ''));
+        if (!rows.length) {
+          status.textContent = 'No data found in that file.';
+          return;
+        }
+        DATA = rows;
+        status.textContent = 'Loaded ' + rows.length + ' rows from ' + file.name;
+        renderStatsBar();
+        // reset filters so nothing hides the newly loaded data
+        document.getElementById('search').value = '';
+        document.getElementById('sortBy').value = 'default';
+        document.getElementById('filterModExp').value = 'all';
+        document.getElementById('filterBotExp').value = 'all';
+        document.getElementById('filterUid').value = 'all';
+        applyFilters();
+      };
+      reader.onerror = () => { status.textContent = 'Could not read that file.'; };
+      reader.readAsText(file);
     });
-    html += '</div>';
 
-    details.innerHTML = html;
-    list.appendChild(details);
-  });
-
-  renderJumpIndex(data);
-}
-
-function renderJumpIndex(data) {
-  const el = document.getElementById('jumpIndex');
-  if (!data.length) { el.innerHTML = ''; return; }
-  el.innerHTML = data.map((row, i) =>
-    '<a href="#app-' + i + '">' + escapeHtml(row['Username'] || 'Unknown') + '</a>'
-  ).join('');
-}
-
-function renderStatsBar() {
-  const el = document.getElementById('statsBar');
-  if (DATA.length === 0) {
-    el.innerHTML = '<span>No data loaded yet.</span>';
-    return;
-  }
-  const total = DATA.length;
-  const modYes = DATA.filter(r => answerIsYes(r[MOD_EXP_FIELD])).length;
-  const botYes = DATA.filter(r => answerIsYes(r[BOT_EXP_FIELD])).length;
-  const uidCounts = computeUidDuplicates(DATA);
-  const dupCount = DATA.filter(r => { const u = getUidDigits(r); return u && uidCounts[u] > 1; }).length;
-  const invalidCount = DATA.filter(r => !isUidLengthValid(r)).length;
-  el.innerHTML =
-    '<span><b>' + total + '</b> total applicants</span>' +
-    '<span><b>' + modYes + '</b> with moderation experience</span>' +
-    '<span><b>' + botYes + '</b> with Discord bot experience</span>' +
-    '<span><b>' + dupCount + '</b> with duplicate BGMI UID</span>' +
-    '<span><b>' + invalidCount + '</b> with invalid UID length</span>';
-}
-
-const MOD_EXP_FIELD = "Do you have any prior moderation/management experience?";
-const BOT_EXP_FIELD = "Do you have experience using Discord Bots?";
-
-function answerIsYes(v) {
-  return String(v || '').trim().toLowerCase().startsWith('yes');
-}
-
-function parseSubmitted(v) {
-  const t = Date.parse(v);
-  return isNaN(t) ? 0 : t;
-}
-
-function applyFilters() {
-  const q = document.getElementById('search').value.trim().toLowerCase();
-  const sortBy = document.getElementById('sortBy').value;
-  const modExp = document.getElementById('filterModExp').value;
-  const botExp = document.getElementById('filterBotExp').value;
-  const uidFilter = document.getElementById('filterUid').value;
-
-  let rows = DATA.slice();
-  const uidCounts = computeUidDuplicates(DATA);
-
-  if (q) {
-    rows = rows.filter(row =>
-      Object.values(row).some(v => String(v || '').toLowerCase().includes(q))
-    );
-  }
-  if (modExp !== 'all') {
-    rows = rows.filter(row => answerIsYes(row[MOD_EXP_FIELD]) === (modExp === 'yes'));
-  }
-  if (botExp !== 'all') {
-    rows = rows.filter(row => answerIsYes(row[BOT_EXP_FIELD]) === (botExp === 'yes'));
-  }
-  if (uidFilter === 'duplicate') {
-    rows = rows.filter(row => { const u = getUidDigits(row); return u && uidCounts[u] > 1; });
-  } else if (uidFilter === 'invalid') {
-    rows = rows.filter(row => !isUidLengthValid(row));
-  } else if (uidFilter === 'valid') {
-    rows = rows.filter(row => isUidLengthValid(row));
-  }
-
-  if (sortBy === 'newest') {
-    rows.sort((a, b) => parseSubmitted(b['Submitted At']) - parseSubmitted(a['Submitted At']));
-  } else if (sortBy === 'oldest') {
-    rows.sort((a, b) => parseSubmitted(a['Submitted At']) - parseSubmitted(b['Submitted At']));
-  } else if (sortBy === 'username') {
-    rows.sort((a, b) => String(a['Username'] || '').toLowerCase().localeCompare(String(b['Username'] || '').toLowerCase()));
-  }
-
-  render(rows, q);
-}
-
-document.getElementById('search').addEventListener('input', applyFilters);
-document.getElementById('sortBy').addEventListener('change', applyFilters);
-document.getElementById('filterModExp').addEventListener('change', applyFilters);
-document.getElementById('filterBotExp').addEventListener('change', applyFilters);
-document.getElementById('filterUid').addEventListener('change', applyFilters);
-
-document.getElementById('csvFile').addEventListener('change', (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-  const status = document.getElementById('uploadStatus');
-  status.textContent = 'Reading ' + file.name + '...';
-
-  const reader = new FileReader();
-  reader.onload = (ev) => {
-    const result = Papa.parse(ev.target.result.trim(), { header: true, skipEmptyLines: true });
-    if (result.errors.length) {
-      console.error(result.errors);
-    }
-    const rows = result.data.filter(r => Object.values(r).some(v => String(v || '').trim() !== ''));
-    if (!rows.length) {
-      status.textContent = 'No data found in that file.';
-      return;
-    }
-    DATA = rows;
-    status.textContent = 'Loaded ' + rows.length + ' rows from ' + file.name;
+    render(DATA);
     renderStatsBar();
-    // reset filters so nothing hides the newly loaded data
-    document.getElementById('search').value = '';
-    document.getElementById('sortBy').value = 'default';
-    document.getElementById('filterModExp').value = 'all';
-    document.getElementById('filterBotExp').value = 'all';
-    document.getElementById('filterUid').value = 'all';
-    applyFilters();
-  };
-  reader.onerror = () => { status.textContent = 'Could not read that file.'; };
-  reader.readAsText(file);
-});
 
-render(DATA);
-renderStatsBar();
-
-document.getElementById('expandAll').addEventListener('click', () => {
-  document.querySelectorAll('.applicant').forEach(el => el.open = true);
-});
-document.getElementById('collapseAll').addEventListener('click', () => {
-  document.querySelectorAll('.applicant').forEach(el => el.open = false);
-});
-</script>
+    document.getElementById('expandAll').addEventListener('click', () => {
+      document.querySelectorAll('.applicant').forEach(el => el.open = true);
+    });
+    document.getElementById('collapseAll').addEventListener('click', () => {
+      document.querySelectorAll('.applicant').forEach(el => el.open = false);
+    });
+  </script>
 
 </body>
+
 </html>
